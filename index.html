@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYSTEM_OVERRIDE | NAWAB SENTINEL</title>
+    <style>
+        /* Base Styling */
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            color: #00ff41;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Matrix Background Canvas */
+        #matrixCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        /* Terminal Window Look */
+        .terminal {
+            width: 90%;
+            max-width: 600px;
+            background: rgba(0, 0, 0, 0.85);
+            border: 2px solid #00ff41;
+            box-shadow: 0 0 25px #00ff41;
+            padding: 20px;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .header {
+            border-bottom: 1px solid #00ff41;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+            letter-spacing: 2px;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        .stats {
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        .loading-bar {
+            width: 100%;
+            height: 10px;
+            background: #111;
+            border: 1px solid #00ff41;
+            margin-top: 15px;
+            position: relative;
+        }
+
+        .progress {
+            width: 85%;
+            height: 100%;
+            background: #00ff41;
+            box-shadow: 0 0 10px #00ff41;
+        }
+
+        /* Hidden Secret Button (Trigger) */
+        #secretBtn {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 15px;
+            height: 15px;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        /* Scanline Effect */
+        .scanline {
+            width: 100%;
+            height: 100px;
+            z-index: 10;
+            background: linear-gradient(0deg, rgba(0, 255, 65, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+            opacity: 0.1;
+            position: absolute;
+            bottom: 100%;
+            animation: scan 4s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { bottom: 100%; }
+            100% { bottom: -100px; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="matrixCanvas"></canvas>
+    <div class="scanline"></div>
+
+    <div class="terminal">
+        <div class="header">--- SYSTEM ONLINE ---</div>
+        
+        <div class="stats">
+            > INITIALIZING NAWAB_ZADA_SENTINEL...<br>
+            > SECURITY_STATUS: <span style="color: #fff;">ENCRYPTED</span><br>
+            > MAIN_SERVER: <span style="color: #00ff41;">ACTIVE</span><br>
+            > UPTIME: <span id="timer">00:00:00</span><br>
+            > TRACE_MODE: STEALTH
+        </div>
+
+        <div class="loading-bar">
+            <div class="progress"></div>
+        </div>
+
+        <div id="secretBtn" onclick="activateVault()"></div>
+    </div>
+
+    <script>
+        // Matrix Rain Animation
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()*&^%";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#00ff41";
+            ctx.font = fontSize + "px monospace";
+
+            drops.forEach((y, i) => {
+                const text = letters[Math.floor(Math.random() * letters.length)];
+                ctx.fillText(text, i * fontSize, y * fontSize);
+                if (y * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            });
+        }
+        setInterval(drawMatrix, 50);
+
+        // Uptime Timer
+        let s = 0;
+        setInterval(() => {
+            s++;
+            let h = Math.floor(s/3600).toString().padStart(2,'0');
+            let m = Math.floor((s%3600)/60).toString().padStart(2,'0');
+            let sec = (s%60).toString().padStart(2,'0');
+            document.getElementById('timer').innerText = `${h}:${m}:${sec}`;
+        }, 1000);
+
+        // Secret Vault Function
+        function activateVault() {
+            const code = prompt("VERIFY SECURITY KEY:");
+            if (code === "nawab786") {
+                alert("ACCESS GRANTED: Entering Ghost Mode...");
+                // Yahan hum future mein hidden tools ka link dalenge
+                window.location.href = "https://k-hub.netlify.app"; // For now Quran Hub pe bhej raha hai
+            } else {
+                alert("ALERT: UNAUTHORIZED ACCESS ATTEMPT DETECTED.");
+            }
+        }
+    </script>
+</body>
+</html>
