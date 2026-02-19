@@ -3,180 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SYSTEM_OVERRIDE | NAWAB SENTINEL</title>
+    <title>NAWAB_SENTINEL_V3 | SECURE</title>
     <style>
-        /* Base Styling */
-        body {
-            margin: 0;
-            padding: 0;
-            background: #000;
-            color: #00ff41;
-            font-family: 'Courier New', Courier, monospace;
-            overflow: hidden;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        body { margin: 0; background: #000; color: #00ff41; font-family: 'Courier New', monospace; overflow-x: hidden; }
+        canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.15; }
+        
+        /* Login Page */
+        #login-page { height: 100vh; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+        .box { border: 2px solid #00ff41; padding: 40px; background: rgba(0,0,0,0.9); box-shadow: 0 0 30px #00ff41; text-align: center; border-radius: 15px; }
+        input { background: #111; border: 1px solid #00ff41; color: #fff; padding: 12px; margin: 10px; width: 80%; text-align: center; border-radius: 5px; outline: none; }
+        button { background: #00ff41; color: #000; border: none; padding: 12px 25px; cursor: pointer; font-weight: bold; border-radius: 5px; transition: 0.3s; }
+        button:hover { background: #fff; box-shadow: 0 0 20px #fff; }
 
-        /* Matrix Background Canvas */
-        #matrixCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: -1;
-            opacity: 0.3;
-        }
+        /* Main Dashboard */
+        #main-dash { display: none; padding: 20px; }
+        .header { border-bottom: 2px solid #00ff41; padding-bottom: 10px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .card { border: 1px solid #00ff41; background: rgba(0,20,0,0.3); padding: 20px; border-radius: 10px; transition: 0.3s; position: relative; overflow: hidden; }
+        .card:hover { transform: translateY(-5px); background: rgba(0,255,65,0.1); }
+        .card h3 { color: #fff; margin-top: 0; border-bottom: 1px solid #00ff41; padding-bottom: 5px; }
 
-        /* Terminal Window Look */
-        .terminal {
-            width: 90%;
-            max-width: 600px;
-            background: rgba(0, 0, 0, 0.85);
-            border: 2px solid #00ff41;
-            box-shadow: 0 0 25px #00ff41;
-            padding: 20px;
-            border-radius: 10px;
-            position: relative;
-        }
-
-        .header {
-            border-bottom: 1px solid #00ff41;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-weight: bold;
-            letter-spacing: 2px;
-            animation: blink 1.5s infinite;
-        }
-
-        @keyframes blink {
-            0% { opacity: 1; }
-            50% { opacity: 0.3; }
-            100% { opacity: 1; }
-        }
-
-        .stats {
-            font-size: 1rem;
-            line-height: 1.8;
-        }
-
-        .loading-bar {
-            width: 100%;
-            height: 10px;
-            background: #111;
-            border: 1px solid #00ff41;
-            margin-top: 15px;
-            position: relative;
-        }
-
-        .progress {
-            width: 85%;
-            height: 100%;
-            background: #00ff41;
-            box-shadow: 0 0 10px #00ff41;
-        }
-
-        /* Hidden Secret Button (Trigger) */
-        #secretBtn {
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            width: 15px;
-            height: 15px;
-            cursor: pointer;
-            background: transparent;
-        }
-
-        /* Scanline Effect */
-        .scanline {
-            width: 100%;
-            height: 100px;
-            z-index: 10;
-            background: linear-gradient(0deg, rgba(0, 255, 65, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
-            opacity: 0.1;
-            position: absolute;
-            bottom: 100%;
-            animation: scan 4s linear infinite;
-        }
-
-        @keyframes scan {
-            0% { bottom: 100%; }
-            100% { bottom: -100px; }
-        }
+        /* Visitor Log Table */
+        table { width: 100%; color: #00ff41; border-collapse: collapse; font-size: 0.8rem; }
+        th, td { border: 1px solid #00ff41; padding: 8px; text-align: left; }
+        
+        .secret-link { color: #00ff41; text-decoration: none; display: block; margin-top: 10px; font-weight: bold; }
+        .secret-link:hover { color: #fff; }
     </style>
 </head>
 <body>
 
-    <canvas id="matrixCanvas"></canvas>
-    <div class="scanline"></div>
+<canvas id="matrix"></canvas>
 
-    <div class="terminal">
-        <div class="header">--- SYSTEM ONLINE ---</div>
-        
-        <div class="stats">
-            > INITIALIZING NAWAB_ZADA_SENTINEL...<br>
-            > SECURITY_STATUS: <span style="color: #fff;">ENCRYPTED</span><br>
-            > MAIN_SERVER: <span style="color: #00ff41;">ACTIVE</span><br>
-            > UPTIME: <span id="timer">00:00:00</span><br>
-            > TRACE_MODE: STEALTH
+<div id="login-page">
+    <div class="box">
+        <h1 style="letter-spacing: 5px;">SENTINEL-X</h1>
+        <p>> ENCRYPTION: AES-256 ACTIVE</p>
+        <input type="password" id="pass" placeholder="ENTER PRIVATE KEY">
+        <br>
+        <button onclick="unlock()">ACCESS SYSTEM</button>
+    </div>
+</div>
+
+<div id="main-dash">
+    <div class="header">
+        <div>
+            <h2 style="margin:0;">NAWAB ZADA COMMAND CENTER</h2>
+            <small id="location-info">> TRACING YOUR CONNECTION...</small>
         </div>
-
-        <div class="loading-bar">
-            <div class="progress"></div>
-        </div>
-
-        <div id="secretBtn" onclick="activateVault()"></div>
+        <button onclick="location.reload()" style="background:red; color:white;">TERMINATE SESSION</button>
     </div>
 
-    <script>
-        // Matrix Rain Animation
-        const canvas = document.getElementById('matrixCanvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+    <div class="grid">
+        <div class="card">
+            <h3>🕌 PROJECT: QURAN HUB</h3>
+            <p>Full digital library recovered and live.</p>
+            <a href="https://k-hub.netlify.app" target="_blank" class="secret-link">[ OPEN MODULE ]</a>
+        </div>
 
-        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()*&^%";
-        const fontSize = 16;
-        const columns = canvas.width / fontSize;
-        const drops = Array(Math.floor(columns)).fill(1);
+        <div class="card">
+            <h3>📅 PROJECT: CALENDAR</h3>
+            <p>Nawab personalized schedule system.</p>
+            <a href="#" class="secret-link">[ OPEN MODULE ]</a>
+        </div>
 
-        function drawMatrix() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#00ff41";
-            ctx.font = fontSize + "px monospace";
+        <div class="card" style="grid-column: span 2;">
+            <h3>📡 VISITOR TRACKER (IP SNIFFER)</h3>
+            <p>> TARGET DATA LOGGED:</p>
+            <table>
+                <tr><th>IP ADDRESS</th><th>CITY</th><th>DEVICE</th></tr>
+                <tr id="visitor-data">
+                    <td id="user-ip">Loading...</td>
+                    <td id="user-city">Loading...</td>
+                    <td id="user-dev">Loading...</td>
+                </tr>
+            </table>
+        </div>
 
-            drops.forEach((y, i) => {
-                const text = letters[Math.floor(Math.random() * letters.length)];
-                ctx.fillText(text, i * fontSize, y * fontSize);
-                if (y * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                drops[i]++;
-            });
+        <div class="card">
+            <h3>🔐 GHOST VAULT</h3>
+            <p>Store your secret keys here.</p>
+            <textarea id="vault" style="width:100%; background:#000; color:#00ff41; border:1px solid #00ff41;" rows="4" placeholder="Type secret info..."></textarea>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Matrix Rain Effect (Background)
+    const c = document.getElementById("matrix");
+    const ctx = c.getContext("2d");
+    c.height = window.innerHeight; c.width = window.innerWidth;
+    const txt = "010110100101"; const fSize = 14; const col = c.width/fSize;
+    const drops = Array(Math.floor(col)).fill(1);
+    function draw() {
+        ctx.fillStyle = "rgba(0,0,0,0.05)"; ctx.fillRect(0,0,c.width,c.height);
+        ctx.fillStyle = "#00ff41"; ctx.font = fSize + "px monospace";
+        drops.forEach((y, i) => {
+            ctx.fillText(txt[Math.floor(Math.random()*txt.length)], i*fSize, y*fSize);
+            if(y*fSize > c.height && Math.random() > 0.975) drops[i] = 0;
+            drops[i]++;
+        });
+    }
+    setInterval(draw, 50);
+
+    // IP Sniffer Function (Using Public API)
+    async function getTrack() {
+        try {
+            const res = await fetch('https://ipapi.co/json/');
+            const data = await res.json();
+            document.getElementById('user-ip').innerText = data.ip;
+            document.getElementById('user-city').innerText = data.city + ", " + data.country;
+            document.getElementById('user-dev').innerText = navigator.platform;
+            document.getElementById('location-info').innerText = `> LOGGED FROM: ${data.city} | IP: ${data.ip}`;
+        } catch (e) {
+            console.log("Tracking blocked by browser.");
         }
-        setInterval(drawMatrix, 50);
+    }
 
-        // Uptime Timer
-        let s = 0;
-        setInterval(() => {
-            s++;
-            let h = Math.floor(s/3600).toString().padStart(2,'0');
-            let m = Math.floor((s%3600)/60).toString().padStart(2,'0');
-            let sec = (s%60).toString().padStart(2,'0');
-            document.getElementById('timer').innerText = `${h}:${m}:${sec}`;
-        }, 1000);
-
-        // Secret Vault Function
-        function activateVault() {
-            const code = prompt("VERIFY SECURITY KEY:");
-            if (code === "nawab786") {
-                alert("ACCESS GRANTED: Entering Ghost Mode...");
-                // Yahan hum future mein hidden tools ka link dalenge
-                window.location.href = "https://k-hub.netlify.app"; // For now Quran Hub pe bhej raha hai
-            } else {
-                alert("ALERT: UNAUTHORIZED ACCESS ATTEMPT DETECTED.");
-            }
+    // Access Logic
+    function unlock() {
+        const p = document.getElementById("pass").value;
+        if(p === "nawab786") {
+            document.getElementById("login-page").style.display = "none";
+            document.getElementById("main-dash").style.display = "block";
+            getTrack(); // Start tracking on login
+        } else {
+            alert("SECURITY BREACH DETECTED. ATTEMPT LOGGED.");
         }
-    </script>
+    }
+
+    // Save Vault Data to Browser
+    const vault = document.getElementById('vault');
+    vault.value = localStorage.getItem('nawab_vault') || "";
+    vault.oninput = () => localStorage.setItem('nawab_vault', vault.value);
+</script>
+
 </body>
 </html>
